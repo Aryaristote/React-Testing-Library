@@ -1,59 +1,31 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import AddInput from "../AddInput"
+import { screen, render, fireEvent } from "@testing-library/react";
+import AddInput from "../AddInput";
 
-const mockedSetTodo = jest.fn();
+//Mock a function passed as a props.
+const MockedSetTodos = jest.fn();
 
 describe("AddInput", () => {
-    it('should render input element', () => {
-        render(
-            <AddInput 
-                todos={[]}
-                setTodos={mockedSetTodo}
-            />
-        );
-        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+    it("should renders input element", async () => {
+        render(<AddInput todos={[]} setTodos={MockedSetTodos} />);
+        const inputElement = screen.getByPlaceholderText("Add a new task here...");
         expect(inputElement).toBeInTheDocument();
-    });
-    
-    it('should be able to type into input', () => {
-        render(
-            <AddInput 
-                todos={[]}
-                setTodos={mockedSetTodo}
-            />
-        );
+    })
+
+    it("should be able to type in input", async () => {
+        render(<AddInput todos={[]} setTodos={MockedSetTodos} />);
         const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
-        fireEvent.click(inputElement)
-        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } })
-        expect(inputElement.value).toBe("Go Grocery Shopping");
-    });
-    
-    it('should be able to type into input', () => {
-        render(
-            <AddInput 
-                todos={[]}
-                setTodos={mockedSetTodo}
-            />
-        );
+
+        fireEvent.change(inputElement, { target: { value: "Any task name" } })
+        expect(inputElement.value).toBe("Any task name");
+    })
+
+    it("should be  to type in input", async () => {
+        render(<AddInput todos={[]} setTodos={MockedSetTodos} />);
         const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
-        fireEvent.click(inputElement)
-        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } });
-        const buttonElement = screen.getByRole("button", { name: /Add/i});
-        fireEvent.click(buttonElement)
-        expect(mockedSetTodo).toBeCalled()
-    });
-    
-    it('should have empty input when add button is cliked', () => {
-        render(
-            <AddInput 
-                todos={[]}
-                setTodos={mockedSetTodo}
-            />
-        );
-        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
-        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } });
-        const buttonElement = screen.getByRole("button", { name: /Add/i});
-        fireEvent.click(buttonElement)
-        expect(inputElement.value).toBe("")
-    });
+        const buttonElement = screen.getByRole("button", { name: /Add/i });
+
+        fireEvent.change(inputElement, { target: { value: "Any task name" } })
+        fireEvent.click(buttonElement) //By clicking we expect inputElement.value to be empty.
+        expect(inputElement.value).toBe("");
+    })
 })

@@ -11,14 +11,8 @@ function Todo() {
     return (
         <div className="todo">
             <Header title="Todo" />
-            <AddInput 
-                setTodos={setTodos}
-                todos={todos}
-            />
-            <TodoList 
-                todos={todos}
-                setTodos={setTodos}
-            />
+            <AddInput setTodos={setTodos} todos={todos} />
+            <TodoList todos={todos} setTodos={setTodos} />
         </div>
     )
 }

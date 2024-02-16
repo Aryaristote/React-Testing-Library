@@ -8,23 +8,33 @@ export default function FollowersList() {
     const [followers, setFollowers] = useState([]);
 
     useEffect(() => {
-
         const fetchFollowers = async () => {
-            const { data } = await axios.get("https://randomuser.me/api/?results=5")
-            setFollowers(data.results)
-        }
+            try {
+                const response = await axios.get("https://randomuser.me/api/?results=5");
+                const { data } = response;
+                if (!data.results) {
+                    throw new Error("Invalid response format: results property is missing");
+                }
+                setFollowers(data.results);
+            } catch (error) {
+                console.error("Error fetching followers:", error);
+            }
+        };
 
-        fetchFollowers()
+        fetchFollowers();
     }, []);
 
-
+    // Check if followers state has data
+    if (followers.length === 0) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="followerslist-container">
             <div>
                 {followers.map((follower, index) => (
                     <div className="follower-item" data-testid={`follower-item-${index}`}>
-                        <img src={follower.picture.large}/>
+                        <img src={follower.picture.large} alt='img' />
                         <div className="followers-details">
                             <div className="follower-item-name">
                                 <h4>{follower.name.first}</h4> <h4>{follower.name.last}</h4>
